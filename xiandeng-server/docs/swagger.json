@@ -1,0 +1,1868 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "所有/v1/api下面的接口",
+        "title": "研伴后台接口文档",
+        "termsOfService": "http://xiandeng.net.cn",
+        "contact": {
+            "name": "Yancy Huang",
+            "url": "http://xiandeng.net.cn",
+            "email": "yhsunwest@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "http://localhost:8080",
+    "paths": {
+        "/account/pending-agents/foid/{foid}": {
+            "get": {
+                "responses": {}
+            }
+        },
+        "/adjustment/insert": {
+            "post": {
+                "description": "InsertAdjustment",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Adjustment"
+                ],
+                "summary": "InsertAdjustment",
+                "parameters": [
+                    {
+                        "description": "InsertAdjustmentRequest",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.InsertAdjustmentRequest"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/adjustment/list": {
+            "get": {
+                "description": "ListAdjustmentRecords",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Adjustment"
+                ],
+                "summary": "ListAdjustmentRecords",
+                "responses": {}
+            }
+        },
+        "/aresource/coupon/search": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "根据条件搜索优惠券",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "支付"
+                ],
+                "summary": "根据条件搜索优惠券",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "agent_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "code",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "created_at_end",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "created_at_start",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "name": "cur_agent",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "name": "discount_amount",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "name": "expired_only",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "name": "issuing_user_ids",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "max_count",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "name": "product_ids",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "name": "student_ids",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "name": "valid_only",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ResponseJsonResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/aresource/recruit/update": {
+            "post": {
+                "description": "获取offer先生",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商品"
+                ],
+                "summary": "获取offer先生信息",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {}
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/auth/authorize": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "根据当前session值返回用户，判断权限",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "授权"
+                ],
+                "summary": "授权",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/controller.ResponseJsonResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/response_model.User"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/controller.ResponseJsonResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "description": "用户名密码登录",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "无登录验证"
+                ],
+                "summary": "用户名密码登录",
+                "parameters": [
+                    {
+                        "description": "用户名密码",
+                        "name": "object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.BodyLogin"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "需求角色",
+                        "name": "require_role",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ResponseJsonResult"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/controller.ResponseJsonResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/coupon/create": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "创建优惠券",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "支付"
+                ],
+                "summary": "创建优惠券",
+                "parameters": [
+                    {
+                        "description": "请求体",
+                        "name": "BodyCreateCoupon",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.BodyCreateCoupon"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ResponseJsonResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/invitation_code/list": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "注册"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/controller.ResponseJsonResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.InvitationCode"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/invitation_code/{code}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "注册"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Code",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/controller.ResponseJsonResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.InvitationCode"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/oa/menu": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "获取公众号菜单信息",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "公众号"
+                ],
+                "summary": "获取公众号菜单信息",
+                "responses": {}
+            }
+        },
+        "/oa/skulink/create": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "创建SKU链接",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "公众号"
+                ],
+                "summary": "创建SKU链接",
+                "parameters": [
+                    {
+                        "description": "CreateSKUPageUrlBody",
+                        "name": "CreateSKUPageUrlBody",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.CreateSKUPageUrlBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ResponseJsonResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/oa/tag/batch": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "批量打标签",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "公众号"
+                ],
+                "summary": "批量打标签",
+                "parameters": [
+                    {
+                        "description": "请求体",
+                        "name": "BodyBatchTagUsers",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.BodyBatchTagUsers"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ResponseJsonResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/oa/tag/create": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "新建标签",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "公众号"
+                ],
+                "summary": "新建标签",
+                "parameters": [
+                    {
+                        "description": "请求体",
+                        "name": "BodyCreateTag",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.BodyCreateTag"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ResponseJsonResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/oa/tag/list": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "获取所有标签",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "公众号"
+                ],
+                "summary": "获取所有标签",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ResponseJsonResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/onboarding/student/update": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "更新学生信息，就读建议",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Onboarding"
+                ],
+                "summary": "更新学生信息，就读建议",
+                "parameters": [
+                    {
+                        "description": "BodyUpdateStudentProfile",
+                        "name": "BodyUpdateStudentProfile",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request_model.BodyUpdateStudentProfile"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/order/list": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "列出订单",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商品"
+                ],
+                "summary": "列出订单",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ResponseJsonResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/order/search": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "搜索订单",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商品"
+                ],
+                "summary": "列出订单",
+                "parameters": [
+                    {
+                        "description": "1",
+                        "name": "BodySearchOrders",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.BodySearchOrders"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ResponseJsonResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/orderproduct/list": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "通过订单Id获取商品",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商品"
+                ],
+                "summary": "通过订单Id获取商品",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "order_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ResponseJsonResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/payment": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "根据订单获取微信交易",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "支付"
+                ],
+                "summary": "根据订单获取微信交易",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "order_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ResponseJsonResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/payment/product/create": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "新建商品",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商品"
+                ],
+                "summary": "新建商品",
+                "parameters": [
+                    {
+                        "description": "请求体",
+                        "name": "BodyProductCreate",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.BodyProductCreate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ResponseJsonResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/payment/product/list": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "列出商品",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商品"
+                ],
+                "summary": "列出商品",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ResponseJsonResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/payment/product/published/list": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "列出已发布商品",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商品"
+                ],
+                "summary": "列出已发布商品",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ResponseJsonResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/payment/product/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "获取商品详情",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商品"
+                ],
+                "summary": "获取商品详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ResponseJsonResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/resource/planning-report/create": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "生成报告",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "服务"
+                ],
+                "summary": "生成报告",
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ResponseJsonResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/resource/planning-report/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "获取当前学生的报告信息",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "服务"
+                ],
+                "summary": "获取当前学生的报告信息",
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ResponseJsonResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/student/study_suggestion": {
+            "get": {
+                "description": "调研报告已完成后，才能执行此方法获取就读建议，获取过程同步",
+                "tags": [
+                    "PlanningReport"
+                ],
+                "summary": "获取就读建议",
+                "responses": {}
+            }
+        },
+        "/student/study_suggestion/update": {
+            "patch": {
+                "description": "调研报告已完成后，才能执行此方法获取就读建议，获取过程异步",
+                "tags": [
+                    "PlanningReport"
+                ],
+                "summary": "更新就读建议",
+                "responses": {}
+            }
+        },
+        "/system/current_time": {
+            "get": {
+                "description": "websocket测试",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统"
+                ],
+                "summary": "websocket测试",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/system/log_common_message": {
+            "post": {
+                "description": "写普通日志",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统"
+                ],
+                "summary": "写普通日志",
+                "parameters": [
+                    {
+                        "description": "BodyLogMessage",
+                        "name": "BodyLogMessage",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/controller.BodyLogMessage"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/system/log_message": {
+            "post": {
+                "description": "写日志",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统"
+                ],
+                "summary": "写日志",
+                "parameters": [
+                    {
+                        "description": "BodyLogMessage",
+                        "name": "BodyLogMessage",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/controller.BodyLogMessage"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/system/order/proof/{order_id}": {
+            "get": {
+                "description": "列出订单凭证",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统"
+                ],
+                "summary": "列出订单凭证",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "order_id",
+                        "name": "order_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "post": {
+                "description": "上传订单凭证",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统"
+                ],
+                "summary": "UploadOrderProof",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "order_id",
+                        "name": "order_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "file",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                }
+            }
+        },
+        "/system/test_task": {
+            "get": {
+                "description": "TestTask",
+                "tags": [
+                    "系统"
+                ],
+                "summary": "TestTask",
+                "responses": {}
+            }
+        },
+        "/system/webhook": {
+            "get": {
+                "description": "回调接口",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统"
+                ],
+                "summary": "回调接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "echostr",
+                        "description": "微信验证webhook接口时的字符串，需要返回",
+                        "name": "echostr",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/user/with_phone": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "通过手机号获取用户",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户"
+                ],
+                "summary": "通过手机号获取用户",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "Phone",
+                        "name": "phone",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/controller.ResponseJsonResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/response_model.User"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/controller.ResponseJsonResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/wallet/balanceactivity/list": {
+            "post": {
+                "description": "ListBalanceActivityDetails",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Wallet"
+                ],
+                "summary": "ListBalanceActivityDetails",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "createdat_end",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "createdat_start",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "name": "price_range_end",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "name": "price_range_start",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "name": "product_list",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "source",
+                        "in": "query"
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/wechatpay/order/confirm": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "根据订单获取微信交易，并判断是否已成功，成功就会call stored procedure: pay_success",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "支付"
+                ],
+                "summary": "根据订单号确认微信交易是否成功",
+                "parameters": [
+                    {
+                        "description": "请求体",
+                        "name": "QueryGetPaymentByOrderId",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.QueryGetPaymentByOrderId"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ResponseJsonResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/wechatpay/payment/close": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "关闭订单",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "支付"
+                ],
+                "summary": "关闭订单",
+                "parameters": [
+                    {
+                        "description": "请求体",
+                        "name": "BodyClosePayment",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.BodyClosePayment"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ResponseJsonResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/wechatpay/prepay/create": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "创建微信prepay",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "支付"
+                ],
+                "summary": "创建微信prepay",
+                "parameters": [
+                    {
+                        "description": "请求体",
+                        "name": "BodyCreatePayment",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.BodyCreatePayment"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/controller.ResponseJsonResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/controller.ResponseCreatePayment"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/wechatpay/prepay/sign": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "预订单签名",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "支付"
+                ],
+                "summary": "预订单签名",
+                "parameters": [
+                    {
+                        "description": "请求体",
+                        "name": "BodySign",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.BodySign"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/controller.ResponseJsonResult"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/wechatpay.SignResult"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "code.Code": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "integer"
+                }
+            }
+        },
+        "controller.BodyBatchTagUsers": {
+            "type": "object",
+            "properties": {
+                "openid_list": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "tagid": {
+                    "type": "integer"
+                }
+            }
+        },
+        "controller.BodyClosePayment": {
+            "type": "object",
+            "properties": {
+                "order_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "controller.BodyCreateCoupon": {
+            "type": "object",
+            "properties": {
+                "discountamount": {
+                    "type": "number"
+                },
+                "effectduedate": {
+                    "type": "string"
+                },
+                "effectstartdate": {
+                    "type": "string"
+                },
+                "maxcount": {
+                    "type": "integer"
+                },
+                "productid": {
+                    "type": "string"
+                },
+                "studentid": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.BodyCreatePayment": {
+            "type": "object",
+            "properties": {
+                "order_number": {
+                    "type": "integer"
+                }
+            }
+        },
+        "controller.BodyCreateTag": {
+            "type": "object",
+            "properties": {
+                "tag": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "controller.BodyLogMessage": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.BodyLogin": {
+            "type": "object",
+            "properties": {
+                "org_name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "密码"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "13011111111"
+                }
+            }
+        },
+        "controller.BodyProductCreate": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "final_price": {
+                    "type": "string"
+                },
+                "hq_agent_price": {
+                    "type": "string"
+                },
+                "lv1_agent_price": {
+                    "type": "string"
+                },
+                "lv2_agent_price": {
+                    "type": "string"
+                },
+                "product_name": {
+                    "type": "string"
+                },
+                "publish_status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "controller.BodySearchOrders": {
+            "type": "object",
+            "properties": {
+                "agent_name": {
+                    "type": "string"
+                },
+                "payment_method": {
+                    "type": "string"
+                },
+                "price_range_end": {
+                    "type": "number"
+                },
+                "price_range_start": {
+                    "type": "number"
+                },
+                "product_name": {
+                    "type": "string"
+                },
+                "status_list": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "student_name": {
+                    "type": "string"
+                },
+                "updateat_end": {
+                    "type": "string"
+                },
+                "updateat_start": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.BodySign": {
+            "type": "object",
+            "properties": {
+                "prepay_id": {
+                    "type": "string"
+                },
+                "timestamp": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.CreateSKUPageUrlBody": {
+            "type": "object",
+            "properties": {
+                "next": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.InsertAdjustmentRequest": {
+            "type": "object",
+            "required": [
+                "account_id",
+                "amount",
+                "balance_type",
+                "notes"
+            ],
+            "properties": {
+                "account_id": {
+                    "type": "string"
+                },
+                "amount": {
+                    "type": "number"
+                },
+                "balance_type": {
+                    "$ref": "#/definitions/models.Accountbalancetype"
+                },
+                "notes": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.QueryGetPaymentByOrderId": {
+            "type": "object",
+            "properties": {
+                "order_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "controller.ResponseCreatePayment": {
+            "type": "object",
+            "properties": {
+                "intent": {
+                    "$ref": "#/definitions/payment.Intent"
+                },
+                "sign": {
+                    "$ref": "#/definitions/wechatpay.SignResult"
+                }
+            }
+        },
+        "controller.ResponseJsonResult": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "errorCode": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "models.AccountType": {
+            "type": "string",
+            "enum": [
+                "STUDENT",
+                "HQ_AGENT",
+                "LV1_AGENT",
+                "LV2_AGENT",
+                "HEAD_QUARTER"
+            ],
+            "x-enum-varnames": [
+                "AccountTypeStudent",
+                "AccountTypeHqAgent",
+                "AccountTypeLv1Agent",
+                "AccountTypeLv2Agent",
+                "AccountTypeHeadQuarter"
+            ]
+        },
+        "models.Accountbalancetype": {
+            "type": "string",
+            "enum": [
+                "balance",
+                "balanceleft",
+                "balanceright",
+                "balancetriplelock",
+                "balancetriple",
+                "pendingreturn"
+            ],
+            "x-enum-varnames": [
+                "AccountbalancetypeBalance",
+                "AccountbalancetypeBalanceleft",
+                "AccountbalancetypeBalanceright",
+                "AccountbalancetypeBalancetriplelock",
+                "AccountbalancetypeBalancetriple",
+                "AccountbalancetypePendingreturn"
+            ]
+        },
+        "models.InvitationCode": {
+            "type": "object",
+            "properties": {
+                "accountId": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "createType": {
+                    "$ref": "#/definitions/models.AccountType"
+                },
+                "expiresAt": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "payment.Intent": {
+            "type": "object",
+            "properties": {
+                "method": {
+                    "$ref": "#/definitions/payment.PaymentMethod"
+                },
+                "order_id": {
+                    "type": "integer"
+                },
+                "prepay_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "payment.PaymentMethod": {
+            "type": "integer",
+            "enum": [
+                0,
+                1
+            ],
+            "x-enum-varnames": [
+                "WechatPay",
+                "AliPay"
+            ]
+        },
+        "request_model.BodyUpdateStudentProfile": {
+            "type": "object",
+            "properties": {
+                "degreeyears": {
+                    "type": "integer"
+                },
+                "entrydate": {
+                    "type": "string"
+                },
+                "firstname": {
+                    "type": "string"
+                },
+                "gaokaoForm": {
+                    "$ref": "#/definitions/request_model.GaokaoData"
+                },
+                "lastname": {
+                    "type": "string"
+                },
+                "majorcode": {
+                    "type": "string"
+                },
+                "majortype": {
+                    "type": "string"
+                },
+                "mbtiForm": {
+                    "$ref": "#/definitions/request_model.MbtiData"
+                },
+                "sex": {
+                    "type": "string"
+                },
+                "university": {
+                    "type": "string"
+                }
+            }
+        },
+        "request_model.GaokaoData": {
+            "type": "object",
+            "properties": {
+                "biology": {
+                    "type": "number"
+                },
+                "chemistry": {
+                    "type": "number"
+                },
+                "chinese": {
+                    "type": "number"
+                },
+                "foreignLanguage": {
+                    "type": "number"
+                },
+                "geography": {
+                    "type": "number"
+                },
+                "history": {
+                    "type": "number"
+                },
+                "mathematics": {
+                    "type": "number"
+                },
+                "physics": {
+                    "type": "number"
+                },
+                "politics": {
+                    "type": "number"
+                },
+                "totalScore": {
+                    "type": "number"
+                }
+            }
+        },
+        "request_model.MbtiData": {
+            "type": "object",
+            "properties": {
+                "mbtiDecision": {
+                    "type": "string"
+                },
+                "mbtiEnergy": {
+                    "type": "string"
+                },
+                "mbtiMind": {
+                    "type": "string"
+                },
+                "mbtiReaction": {
+                    "type": "string"
+                }
+            }
+        },
+        "response_model.User": {
+            "type": "object",
+            "properties": {
+                "account_id": {
+                    "type": "string"
+                },
+                "account_name": {
+                    "type": "string"
+                },
+                "agent_check": {
+                    "$ref": "#/definitions/code.Code"
+                },
+                "alias_name": {
+                    "type": "string"
+                },
+                "avatar_url": {
+                    "type": "string"
+                },
+                "demo_mode": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "nick_name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                }
+            }
+        },
+        "wechatpay.SignResult": {
+            "type": "object",
+            "properties": {
+                "app_id": {
+                    "type": "string"
+                },
+                "nonce": {
+                    "type": "string"
+                },
+                "signature": {
+                    "type": "string"
+                },
+                "timestamp": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "description": "公众号相关接口",
+            "name": "公众号",
+            "externalDocs": {
+                "url": "http://xiandeng.net.cn"
+            }
+        }
+    ],
+    "externalDocs": {
+        "url": "https://github.com/swaggo/swag/blob/master/README_zh-CN.md"
+    }
+}

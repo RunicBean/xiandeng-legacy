@@ -1,0 +1,39 @@
+Server:
+  Env: dev
+  WebDomain: example.com
+  SessionSecret: test-session-secret
+Auth:
+  JwtKey: 
+  WxAppID: 
+  WxAppSecret: 
+OSS:
+  Product: aliyun
+  Bucket:
+  Endpoint: 
+  AccessKeyId: 
+  AccessKeySecret:
+Database:
+  DbName:
+  CredInfo: root:mypassword@tcp(localhost)/goadmin?parseTime=true
+Payment:
+  MchId: abc
+  MchCertificateSerialNumber: abc
+  MchAPIv3Key: abc
+Data:
+  LlmAPIKey: appxxx
+TaskManager:
+  WorkerCount: 2
+  TimeoutSeconds: 300
+Redis:
+  Addr: localhost:6379
+  Password:
+Logger:
+  LogFileName:
+  LogLevel: debug
+  MaxSize: 100 # Maximum size unit for each log file: M
+  MaxBackups: 10 # The maximum number of backups that can be saved for log files
+  MaxAge: 30 # Maximum number of days the file can be saved
+  Compress: false
+  LogEncoding: console
+Admin:
+  Pass: ...

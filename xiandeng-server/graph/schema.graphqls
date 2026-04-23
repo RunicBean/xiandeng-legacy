@@ -1,0 +1,170 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+# Types
+type User {
+  id: ID!
+  nickName: String!
+  avatarUrl: String!
+}
+
+enum AccountType {
+  STUDENT
+  LV1_AGENT
+  LV2_AGENT
+  HEAD_QUARTER
+}
+
+type InvitationCode {
+  accountId: String!
+  code: String!
+  userId: String!
+  createType: AccountType!
+  expiresAt: String!
+}
+
+type Product {
+  id: ID!
+  type: String
+  productName: String
+  finalPrice: String
+  hqAgentPrice: String
+  lv1AgentPrice: String
+  lv2AgentPrice: String
+  publishStatus: Boolean
+  description: String
+}
+
+input productCreate {
+  productName: String!
+  finalPrice: String!
+  hqAgentPrice: String!
+  lv1AgentPrice: String!
+  lv2AgentPrice: String!
+  publishStatus: Boolean!
+  description: String!
+}
+
+input productUpdate {
+  productName: String
+  finalPrice: String
+  hqAgentPrice: String
+  lv1AgentPrice: String
+  lv2AgentPrice: String
+  publishStatus: Boolean
+  description: String
+}
+
+type AuthorizeUserData {
+  map: [String!]!
+}
+
+type Void {
+  foo: String
+}
+
+"""
+`Time` is a simple type only containing the current time as
+a unix epoch timestamp and a string timestamp.
+"""
+type Time {
+  unixTime: Int!
+  timeStamp: String!
+}
+
+"""
+`WechatAuthStatus` is a subscription of current status of wechat authentication
+"""
+type WechatAuthStatus {
+  token: String!
+  state: WechatAuthState!
+  message: String
+}
+
+enum WechatAuthState {
+  INIT
+  CODE_SCANNED
+  AUTHORIZED
+  SUCCESS
+  FAILED
+}
+
+# Inputs
+input UserProfile {
+  email: String
+  phone: String
+  avatar: String
+  province: String
+  city: String
+}
+
+
+
+input UserBasicInfo {
+  phone: String!
+  password: String!
+  email: String
+  refCode: String
+  province: String
+  city: String
+}
+
+input StudentAttributes {
+  firstname: String
+  lastname: String
+  university: String
+  faculty: String
+  department: String
+  major: String
+}
+
+
+# Query, Mutation, Subscrption
+type Query {
+  users: [User!]!
+  invitationCodes(accountId: String, userId: String): [InvitationCode!]!
+  invitationCodeDetail(code: String!): InvitationCode!
+  getRedirectUrl(sessionId: String!): String!
+}
+
+type Mutation {
+  # Auth
+  getUserWithPhone(phone: String!): User
+  login(phone: String!, password: String!): String
+  authorize: User
+  startWxLogin(sessionId: String!, userBasicInfo: UserBasicInfo!, stage: String!, inplaceRedirect: Boolean!): String!
+
+  # Signup
+  generateInvitationCode(userId: String!, type: AccountType!): String!
+  updateStudentAttributes(attrs: StudentAttributes!): String!
+  
+  # Resources
+  createProduct(product: productCreate!): Product!
+
+  # Admin
+  createStudentPortalMenu: String
+
+  # Payment
+  createPayment(userId: String!, productId: String!): String!
+
+
+  helperSetSession(token: String!): Boolean!
+  
+  
+  getUserInfo(openId: String!): String!
+  updateUserPassword(name: String!, password: String!): User!
+  createUserWithPassword(name: String!, password: String!): User!
+  updateUserProfile(profile: UserProfile!): User!
+}
+
+type Subscription {
+  """
+  `currentTime` will return a stream of `Time` objects.
+  """
+  currentTime: Time!
+
+  wechatAuthStatus(sessionId: String!): WechatAuthStatus!
+}
+
+

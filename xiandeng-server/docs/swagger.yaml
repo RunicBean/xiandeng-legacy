@@ -1,0 +1,1163 @@
+definitions:
+  code.Code:
+    properties:
+      message:
+        type: string
+      number:
+        type: integer
+    type: object
+  controller.BodyBatchTagUsers:
+    properties:
+      openid_list:
+        items:
+          type: string
+        type: array
+      tagid:
+        type: integer
+    type: object
+  controller.BodyClosePayment:
+    properties:
+      order_id:
+        type: integer
+    type: object
+  controller.BodyCreateCoupon:
+    properties:
+      discountamount:
+        type: number
+      effectduedate:
+        type: string
+      effectstartdate:
+        type: string
+      maxcount:
+        type: integer
+      productid:
+        type: string
+      studentid:
+        type: string
+    type: object
+  controller.BodyCreatePayment:
+    properties:
+      order_number:
+        type: integer
+    type: object
+  controller.BodyCreateTag:
+    properties:
+      tag:
+        properties:
+          name:
+            type: string
+        type: object
+    type: object
+  controller.BodyLogMessage:
+    properties:
+      message:
+        type: string
+    type: object
+  controller.BodyLogin:
+    properties:
+      org_name:
+        type: string
+      password:
+        example: 密码
+        type: string
+      phone:
+        example: "13011111111"
+        type: string
+    type: object
+  controller.BodyProductCreate:
+    properties:
+      description:
+        type: string
+      final_price:
+        type: string
+      hq_agent_price:
+        type: string
+      lv1_agent_price:
+        type: string
+      lv2_agent_price:
+        type: string
+      product_name:
+        type: string
+      publish_status:
+        type: boolean
+    type: object
+  controller.BodySearchOrders:
+    properties:
+      agent_name:
+        type: string
+      payment_method:
+        type: string
+      price_range_end:
+        type: number
+      price_range_start:
+        type: number
+      product_name:
+        type: string
+      status_list:
+        items:
+          type: string
+        type: array
+      student_name:
+        type: string
+      updateat_end:
+        type: string
+      updateat_start:
+        type: string
+    type: object
+  controller.BodySign:
+    properties:
+      prepay_id:
+        type: string
+      timestamp:
+        type: string
+    type: object
+  controller.CreateSKUPageUrlBody:
+    properties:
+      next:
+        type: string
+    type: object
+  controller.InsertAdjustmentRequest:
+    properties:
+      account_id:
+        type: string
+      amount:
+        type: number
+      balance_type:
+        $ref: '#/definitions/models.Accountbalancetype'
+      notes:
+        type: string
+    required:
+    - account_id
+    - amount
+    - balance_type
+    - notes
+    type: object
+  controller.QueryGetPaymentByOrderId:
+    properties:
+      order_id:
+        type: integer
+    type: object
+  controller.ResponseCreatePayment:
+    properties:
+      intent:
+        $ref: '#/definitions/payment.Intent'
+      sign:
+        $ref: '#/definitions/wechatpay.SignResult'
+    type: object
+  controller.ResponseJsonResult:
+    properties:
+      data: {}
+      errorCode:
+        type: integer
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  models.AccountType:
+    enum:
+    - STUDENT
+    - HQ_AGENT
+    - LV1_AGENT
+    - LV2_AGENT
+    - HEAD_QUARTER
+    type: string
+    x-enum-varnames:
+    - AccountTypeStudent
+    - AccountTypeHqAgent
+    - AccountTypeLv1Agent
+    - AccountTypeLv2Agent
+    - AccountTypeHeadQuarter
+  models.Accountbalancetype:
+    enum:
+    - balance
+    - balanceleft
+    - balanceright
+    - balancetriplelock
+    - balancetriple
+    - pendingreturn
+    type: string
+    x-enum-varnames:
+    - AccountbalancetypeBalance
+    - AccountbalancetypeBalanceleft
+    - AccountbalancetypeBalanceright
+    - AccountbalancetypeBalancetriplelock
+    - AccountbalancetypeBalancetriple
+    - AccountbalancetypePendingreturn
+  models.InvitationCode:
+    properties:
+      accountId:
+        type: string
+      code:
+        type: string
+      createType:
+        $ref: '#/definitions/models.AccountType'
+      expiresAt:
+        type: string
+      userId:
+        type: string
+    type: object
+  payment.Intent:
+    properties:
+      method:
+        $ref: '#/definitions/payment.PaymentMethod'
+      order_id:
+        type: integer
+      prepay_id:
+        type: string
+    type: object
+  payment.PaymentMethod:
+    enum:
+    - 0
+    - 1
+    type: integer
+    x-enum-varnames:
+    - WechatPay
+    - AliPay
+  request_model.BodyUpdateStudentProfile:
+    properties:
+      degreeyears:
+        type: integer
+      entrydate:
+        type: string
+      firstname:
+        type: string
+      gaokaoForm:
+        $ref: '#/definitions/request_model.GaokaoData'
+      lastname:
+        type: string
+      majorcode:
+        type: string
+      majortype:
+        type: string
+      mbtiForm:
+        $ref: '#/definitions/request_model.MbtiData'
+      sex:
+        type: string
+      university:
+        type: string
+    type: object
+  request_model.GaokaoData:
+    properties:
+      biology:
+        type: number
+      chemistry:
+        type: number
+      chinese:
+        type: number
+      foreignLanguage:
+        type: number
+      geography:
+        type: number
+      history:
+        type: number
+      mathematics:
+        type: number
+      physics:
+        type: number
+      politics:
+        type: number
+      totalScore:
+        type: number
+    type: object
+  request_model.MbtiData:
+    properties:
+      mbtiDecision:
+        type: string
+      mbtiEnergy:
+        type: string
+      mbtiMind:
+        type: string
+      mbtiReaction:
+        type: string
+    type: object
+  response_model.User:
+    properties:
+      account_id:
+        type: string
+      account_name:
+        type: string
+      agent_check:
+        $ref: '#/definitions/code.Code'
+      alias_name:
+        type: string
+      avatar_url:
+        type: string
+      demo_mode:
+        type: boolean
+      id:
+        type: string
+      nick_name:
+        type: string
+      phone:
+        type: string
+    type: object
+  wechatpay.SignResult:
+    properties:
+      app_id:
+        type: string
+      nonce:
+        type: string
+      signature:
+        type: string
+      timestamp:
+        type: string
+    type: object
+externalDocs:
+  url: https://github.com/swaggo/swag/blob/master/README_zh-CN.md
+host: http://localhost:8080
+info:
+  contact:
+    email: yhsunwest@gmail.com
+    name: Yancy Huang
+    url: http://xiandeng.net.cn
+  description: 所有/v1/api下面的接口
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://xiandeng.net.cn
+  title: 研伴后台接口文档
+  version: "1.0"
+paths:
+  /account/pending-agents/foid/{foid}:
+    get:
+      responses: {}
+  /adjustment/insert:
+    post:
+      consumes:
+      - application/json
+      description: InsertAdjustment
+      parameters:
+      - description: InsertAdjustmentRequest
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/controller.InsertAdjustmentRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: InsertAdjustment
+      tags:
+      - Adjustment
+  /adjustment/list:
+    get:
+      consumes:
+      - application/json
+      description: ListAdjustmentRecords
+      produces:
+      - application/json
+      responses: {}
+      summary: ListAdjustmentRecords
+      tags:
+      - Adjustment
+  /aresource/coupon/search:
+    get:
+      description: 根据条件搜索优惠券
+      parameters:
+      - in: query
+        name: agent_id
+        type: string
+      - in: query
+        name: code
+        type: integer
+      - in: query
+        name: created_at_end
+        type: string
+      - in: query
+        name: created_at_start
+        type: string
+      - in: query
+        name: cur_agent
+        type: boolean
+      - in: query
+        name: discount_amount
+        type: number
+      - in: query
+        name: expired_only
+        type: boolean
+      - collectionFormat: csv
+        in: query
+        items:
+          type: string
+        name: issuing_user_ids
+        type: array
+      - in: query
+        name: max_count
+        type: integer
+      - collectionFormat: csv
+        in: query
+        items:
+          type: string
+        name: product_ids
+        type: array
+      - collectionFormat: csv
+        in: query
+        items:
+          type: string
+        name: student_ids
+        type: array
+      - in: query
+        name: valid_only
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.ResponseJsonResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 根据条件搜索优惠券
+      tags:
+      - 支付
+  /aresource/recruit/update:
+    post:
+      description: 获取offer先生
+      parameters:
+      - in: query
+        name: page
+        type: integer
+      - in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema: {}
+        "400":
+          description: Bad Request
+          schema: {}
+      summary: 获取offer先生信息
+      tags:
+      - 商品
+  /auth/authorize:
+    get:
+      description: 根据当前session值返回用户，判断权限
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/controller.ResponseJsonResult'
+            - properties:
+                data:
+                  $ref: '#/definitions/response_model.User'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            allOf:
+            - $ref: '#/definitions/controller.ResponseJsonResult'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 授权
+      tags:
+      - 授权
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: 用户名密码登录
+      parameters:
+      - description: 用户名密码
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/controller.BodyLogin'
+      - description: 需求角色
+        in: query
+        name: require_role
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.ResponseJsonResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/controller.ResponseJsonResult'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 用户名密码登录
+      tags:
+      - 无登录验证
+  /coupon/create:
+    post:
+      description: 创建优惠券
+      parameters:
+      - description: 请求体
+        in: body
+        name: BodyCreateCoupon
+        required: true
+        schema:
+          $ref: '#/definitions/controller.BodyCreateCoupon'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.ResponseJsonResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 创建优惠券
+      tags:
+      - 支付
+  /invitation_code/{code}:
+    get:
+      parameters:
+      - description: Code
+        in: path
+        name: code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/controller.ResponseJsonResult'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.InvitationCode'
+                  type: array
+              type: object
+      tags:
+      - 注册
+  /invitation_code/list:
+    get:
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/controller.ResponseJsonResult'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.InvitationCode'
+                  type: array
+              type: object
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - 注册
+  /oa/menu:
+    get:
+      description: 获取公众号菜单信息
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: 获取公众号菜单信息
+      tags:
+      - 公众号
+  /oa/skulink/create:
+    post:
+      description: 创建SKU链接
+      parameters:
+      - description: CreateSKUPageUrlBody
+        in: body
+        name: CreateSKUPageUrlBody
+        required: true
+        schema:
+          $ref: '#/definitions/controller.CreateSKUPageUrlBody'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controller.ResponseJsonResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 创建SKU链接
+      tags:
+      - 公众号
+  /oa/tag/batch:
+    post:
+      consumes:
+      - application/json
+      description: 批量打标签
+      parameters:
+      - description: 请求体
+        in: body
+        name: BodyBatchTagUsers
+        required: true
+        schema:
+          $ref: '#/definitions/controller.BodyBatchTagUsers'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.ResponseJsonResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 批量打标签
+      tags:
+      - 公众号
+  /oa/tag/create:
+    post:
+      consumes:
+      - application/json
+      description: 新建标签
+      parameters:
+      - description: 请求体
+        in: body
+        name: BodyCreateTag
+        required: true
+        schema:
+          $ref: '#/definitions/controller.BodyCreateTag'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.ResponseJsonResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 新建标签
+      tags:
+      - 公众号
+  /oa/tag/list:
+    get:
+      description: 获取所有标签
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.ResponseJsonResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取所有标签
+      tags:
+      - 公众号
+  /onboarding/student/update:
+    post:
+      consumes:
+      - application/json
+      description: 更新学生信息，就读建议
+      parameters:
+      - description: BodyUpdateStudentProfile
+        in: body
+        name: BodyUpdateStudentProfile
+        required: true
+        schema:
+          $ref: '#/definitions/request_model.BodyUpdateStudentProfile'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: 更新学生信息，就读建议
+      tags:
+      - Onboarding
+  /order/list:
+    get:
+      description: 列出订单
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.ResponseJsonResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 列出订单
+      tags:
+      - 商品
+  /order/search:
+    post:
+      description: 搜索订单
+      parameters:
+      - description: "1"
+        in: body
+        name: BodySearchOrders
+        required: true
+        schema:
+          $ref: '#/definitions/controller.BodySearchOrders'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.ResponseJsonResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 列出订单
+      tags:
+      - 商品
+  /orderproduct/list:
+    get:
+      description: 通过订单Id获取商品
+      parameters:
+      - in: query
+        name: order_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.ResponseJsonResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 通过订单Id获取商品
+      tags:
+      - 商品
+  /payment:
+    get:
+      description: 根据订单获取微信交易
+      parameters:
+      - in: query
+        name: order_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.ResponseJsonResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 根据订单获取微信交易
+      tags:
+      - 支付
+  /payment/product/{id}:
+    get:
+      description: 获取商品详情
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.ResponseJsonResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取商品详情
+      tags:
+      - 商品
+  /payment/product/create:
+    post:
+      consumes:
+      - application/json
+      description: 新建商品
+      parameters:
+      - description: 请求体
+        in: body
+        name: BodyProductCreate
+        required: true
+        schema:
+          $ref: '#/definitions/controller.BodyProductCreate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.ResponseJsonResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 新建商品
+      tags:
+      - 商品
+  /payment/product/list:
+    get:
+      description: 列出商品
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.ResponseJsonResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 列出商品
+      tags:
+      - 商品
+  /payment/product/published/list:
+    get:
+      description: 列出已发布商品
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.ResponseJsonResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 列出已发布商品
+      tags:
+      - 商品
+  /resource/planning-report/{id}:
+    get:
+      description: 获取当前学生的报告信息
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controller.ResponseJsonResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取当前学生的报告信息
+      tags:
+      - 服务
+  /resource/planning-report/create:
+    post:
+      description: 生成报告
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controller.ResponseJsonResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 生成报告
+      tags:
+      - 服务
+  /student/study_suggestion:
+    get:
+      description: 调研报告已完成后，才能执行此方法获取就读建议，获取过程同步
+      responses: {}
+      summary: 获取就读建议
+      tags:
+      - PlanningReport
+  /student/study_suggestion/update:
+    patch:
+      description: 调研报告已完成后，才能执行此方法获取就读建议，获取过程异步
+      responses: {}
+      summary: 更新就读建议
+      tags:
+      - PlanningReport
+  /system/current_time:
+    get:
+      description: websocket测试
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: websocket测试
+      tags:
+      - 系统
+  /system/log_common_message:
+    post:
+      consumes:
+      - application/json
+      description: 写普通日志
+      parameters:
+      - description: BodyLogMessage
+        in: body
+        name: BodyLogMessage
+        schema:
+          $ref: '#/definitions/controller.BodyLogMessage'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: 写普通日志
+      tags:
+      - 系统
+  /system/log_message:
+    post:
+      consumes:
+      - application/json
+      description: 写日志
+      parameters:
+      - description: BodyLogMessage
+        in: body
+        name: BodyLogMessage
+        schema:
+          $ref: '#/definitions/controller.BodyLogMessage'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: 写日志
+      tags:
+      - 系统
+  /system/order/proof/{order_id}:
+    get:
+      description: 列出订单凭证
+      parameters:
+      - description: order_id
+        in: path
+        name: order_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: 列出订单凭证
+      tags:
+      - 系统
+    post:
+      consumes:
+      - multipart/form-data
+      description: 上传订单凭证
+      parameters:
+      - description: order_id
+        in: path
+        name: order_id
+        required: true
+        type: string
+      - description: file
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+      summary: UploadOrderProof
+      tags:
+      - 系统
+  /system/test_task:
+    get:
+      description: TestTask
+      responses: {}
+      summary: TestTask
+      tags:
+      - 系统
+  /system/webhook:
+    get:
+      description: 回调接口
+      parameters:
+      - description: 微信验证webhook接口时的字符串，需要返回
+        example: echostr
+        in: query
+        name: echostr
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: 回调接口
+      tags:
+      - 系统
+  /user/with_phone:
+    get:
+      description: 通过手机号获取用户
+      parameters:
+      - example: Phone
+        in: query
+        name: phone
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/controller.ResponseJsonResult'
+            - properties:
+                data:
+                  $ref: '#/definitions/response_model.User'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/controller.ResponseJsonResult'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 通过手机号获取用户
+      tags:
+      - 用户
+  /wallet/balanceactivity/list:
+    post:
+      consumes:
+      - application/json
+      description: ListBalanceActivityDetails
+      parameters:
+      - in: query
+        name: createdat_end
+        type: string
+      - in: query
+        name: createdat_start
+        type: string
+      - in: query
+        name: id
+        type: string
+      - in: query
+        name: price_range_end
+        type: number
+      - in: query
+        name: price_range_start
+        type: number
+      - collectionFormat: csv
+        in: query
+        items:
+          type: string
+        name: product_list
+        type: array
+      - in: query
+        name: source
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: ListBalanceActivityDetails
+      tags:
+      - Wallet
+  /wechatpay/order/confirm:
+    post:
+      description: '根据订单获取微信交易，并判断是否已成功，成功就会call stored procedure: pay_success'
+      parameters:
+      - description: 请求体
+        in: body
+        name: QueryGetPaymentByOrderId
+        required: true
+        schema:
+          $ref: '#/definitions/controller.QueryGetPaymentByOrderId'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.ResponseJsonResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 根据订单号确认微信交易是否成功
+      tags:
+      - 支付
+  /wechatpay/payment/close:
+    post:
+      description: 关闭订单
+      parameters:
+      - description: 请求体
+        in: body
+        name: BodyClosePayment
+        required: true
+        schema:
+          $ref: '#/definitions/controller.BodyClosePayment'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.ResponseJsonResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 关闭订单
+      tags:
+      - 支付
+  /wechatpay/prepay/create:
+    post:
+      description: 创建微信prepay
+      parameters:
+      - description: 请求体
+        in: body
+        name: BodyCreatePayment
+        required: true
+        schema:
+          $ref: '#/definitions/controller.BodyCreatePayment'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/controller.ResponseJsonResult'
+            - properties:
+                data:
+                  $ref: '#/definitions/controller.ResponseCreatePayment'
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 创建微信prepay
+      tags:
+      - 支付
+  /wechatpay/prepay/sign:
+    post:
+      consumes:
+      - application/json
+      description: 预订单签名
+      parameters:
+      - description: 请求体
+        in: body
+        name: BodySign
+        required: true
+        schema:
+          $ref: '#/definitions/controller.BodySign'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/controller.ResponseJsonResult'
+            - properties:
+                data:
+                  $ref: '#/definitions/wechatpay.SignResult'
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 预订单签名
+      tags:
+      - 支付
+swagger: "2.0"
+tags:
+- description: 公众号相关接口
+  externalDocs:
+    url: http://xiandeng.net.cn
+  name: 公众号

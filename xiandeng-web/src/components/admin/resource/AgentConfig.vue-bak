@@ -1,0 +1,86 @@
+<template>
+    <div>
+        <h1>代理配置</h1>
+        <a-card shadow="always" :body-style="{ padding: '20px' }">
+            <template #title>
+            <div>
+                <span>学员支付方式</span>
+            </div>
+            </template>
+            <el-checkbox v-model="agentConfigForm.paymentmethodwechatoffline" label="微信线下支付" @change="updateAgentConfig"></el-checkbox>
+            <el-checkbox v-model="agentConfigForm.paymentmethodalipayoffline" label="支付宝线下支付" @change="updateAgentConfig"></el-checkbox>
+            <el-checkbox v-model="agentConfigForm.paymentmethodcardoffline" label="银行卡转账" @change="updateAgentConfig"></el-checkbox>
+            <el-checkbox v-model="agentConfigForm.paymentmethodwechatpay" label="微信在线支付" @change="updateAgentConfig"></el-checkbox>
+
+        </a-card>
+
+        <a-card class="mt-10" shadow="always" :body-style="{ padding: '20px' }">
+            <template #header>
+            <div>
+                <span>支付参数配置</span>
+            </div>
+            </template>
+            <el-checkbox v-model="agentConfigForm.couponinputenabled" label="销售代码参数" @change="updateAgentConfig"></el-checkbox>
+            
+        </a-card>
+        
+    </div>
+</template>
+
+<script setup lang="ts">
+import { getAgent, AgentResponse, UpdateAgentForm, updateAgentSettings } from '@/api/request/uam';
+import { ElLoading, ElNotification } from 'element-plus';
+import { ref, onMounted } from 'vue'
+onMounted(async () => {
+    startLoading()
+    await getAgent().then((res: AgentResponse) => {
+        agentConfigForm.value.paymentmethodwechatoffline = res.data.paymentmethodwechatoffline
+        agentConfigForm.value.paymentmethodalipayoffline = res.data.paymentmethodalipayoffline
+        agentConfigForm.value.paymentmethodcardoffline = res.data.paymentmethodcardoffline
+        agentConfigForm.value.paymentmethodwechatpay = res.data.paymentmethodwechatpay
+        agentConfigForm.value.couponinputenabled = res.data.couponinputenabled
+    })
+    .finally(() => {
+        stopLoading()
+    })
+})
+const agentConfigForm = ref<UpdateAgentForm>(new UpdateAgentForm)
+
+const loading = ref<any | null>(null)
+function startLoading() {
+    loading.value = ElLoading.service({
+    lock: true,
+    text: 'Loading',
+    background: 'rgba(0, 0, 0, 0.7)',
+})
+}
+
+function stopLoading() {
+    loading.value?.close()
+}
+
+function updateAgentConfig() {
+    startLoading()
+    updateAgentSettings(agentConfigForm.value).then(() => {
+        ElNotification({
+            title: '成功',
+            message: '更新成功',
+            type: 'success',
+        })
+    })
+    .catch(() => {
+        ElNotification({
+            title: '失败',
+            message: '更新失败',
+            type: 'error',
+        })
+    })
+    .finally(() => {
+        stopLoading()
+    })
+}
+</script>
+
+<style scoped>
+
+</style>

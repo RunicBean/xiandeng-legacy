@@ -1,0 +1,16 @@
+conf/*_config.yaml
+conf/*.pem
+__debug_*
+
+.DS_Store
+profile
+/server
+/tasks/tasks
+.idea/
+/tmp/
+*.exe
+
+*.pdf
+*.log
+
+/main.go

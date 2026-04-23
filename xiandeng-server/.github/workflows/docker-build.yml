@@ -1,0 +1,132 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+
+  build-server:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      env: 
+        REGISTRY_FULL_NAME: "${{vars.CR_ADDR}}/${{vars.CR_NS}}/${{vars.CR_SERVER_REGISTRY_NAME}}"
+      run: |
+        docker version
+        echo ${{secrets.CR_PASSWORD}} | docker login --username=${{secrets.CR_USERNAME}} --password-stdin ${{vars.CR_ADDR}} 
+        docker build . --file pro-server.Dockerfile --tag ${{env.REGISTRY_FULL_NAME}}:${{github.sha}}
+        docker push ${{env.REGISTRY_FULL_NAME}}:${{github.sha}}
+  deploy-server:
+    needs: build-server
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout private tools
+      uses: actions/checkout@v4
+      with:
+        repository: RunicBean/yanban-gitops
+        token: ${{ secrets.ACCESS_TOKEN }}
+    - name: Modify Gitops tag
+      env:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        SERVICE_FILE: xiandeng-server/compose.yml
+        TAG_NAME: imgTag
+        
+      run: |
+        #!/usr/bin/env bash
+        git config user.email "devops@example.com"
+        git config user.name "devops"
+
+        pwd && ls -trhl
+
+        sed -e "s@:${TAG_NAME}@:${{github.sha}}@" templates/${SERVICE_FILE} > ${SERVICE_FILE}
+        git add ${SERVICE_FILE}
+        git commit --no-verify -m "Trigger modification on compose file ${SERVICE_FILE} with tag ${{github.sha}}"
+        git push
+  
+  build-worker:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      env: 
+        REGISTRY_FULL_NAME: "${{vars.CR_ADDR}}/${{vars.CR_NS}}/${{vars.CR_WORKER_REGISTRY_NAME}}"
+        ENV: pro
+      run: |
+        docker version
+        echo ${{secrets.CR_PASSWORD}} | docker login --username=${{secrets.CR_USERNAME}} --password-stdin ${{vars.CR_ADDR}} 
+        docker build . --file worker.Dockerfile --tag ${{env.REGISTRY_FULL_NAME}}:${{github.sha}}
+        docker push ${{env.REGISTRY_FULL_NAME}}:${{github.sha}}
+  deploy-worker:
+    needs: [build-worker, deploy-server]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout private tools
+      uses: actions/checkout@v4
+      with:
+        repository: RunicBean/yanban-gitops
+        token: ${{ secrets.ACCESS_TOKEN }}
+    - name: Modify Gitops tag
+      env:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        SERVICE_FILE: xiandeng-worker/compose.yml
+        TAG_NAME: imgTag
+        
+      run: |
+        #!/usr/bin/env bash
+        git config user.email "devops@example.com"
+        git config user.name "devops"
+
+        pwd && ls -trhl
+
+        sed -e "s@:${TAG_NAME}@:${{github.sha}}@" templates/${SERVICE_FILE} > ${SERVICE_FILE}
+        git add ${SERVICE_FILE}
+        git commit --no-verify -m "Trigger modification on compose file ${SERVICE_FILE} with tag ${{github.sha}}"
+        git push
+
+  build-schedule:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build the Docker image
+        env:
+          REGISTRY_FULL_NAME: "${{vars.CR_ADDR}}/${{vars.CR_NS}}/${{vars.CR_SCHEDULE_REGISTRY_NAME}}"
+          ENV: pro
+        run: |
+          docker version
+          echo ${{secrets.CR_PASSWORD}} | docker login --username=${{secrets.CR_USERNAME}} --password-stdin ${{vars.CR_ADDR}} 
+          docker build . --file schedule.Dockerfile --tag ${{env.REGISTRY_FULL_NAME}}:${{github.sha}}
+          docker push ${{env.REGISTRY_FULL_NAME}}:${{github.sha}}
+  deploy-schedule:
+    needs: [build-schedule, deploy-worker, deploy-server]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout private tools
+        uses: actions/checkout@v4
+        with:
+          repository: RunicBean/yanban-gitops
+          token: ${{ secrets.ACCESS_TOKEN }}
+      - name: Modify Gitops tag
+        env:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          SERVICE_FILE: xiandeng-schedule/compose.yml
+          TAG_NAME: imgTag
+
+        run: |
+          #!/usr/bin/env bash
+          git config user.email "devops@example.com"
+          git config user.name "devops"
+          
+          pwd && ls -trhl
+          
+          sed -e "s@:${TAG_NAME}@:${{github.sha}}@" templates/${SERVICE_FILE} > ${SERVICE_FILE}
+          git add ${SERVICE_FILE}
+          git commit --no-verify -m "Trigger modification on compose file ${SERVICE_FILE} with tag ${{github.sha}}"
+          git push

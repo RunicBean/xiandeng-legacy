@@ -1,0 +1,53 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  # pull_request:
+  #   branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      env: 
+        REGISTRY_FULL_NAME: "${{vars.CR_ADDR}}/${{vars.CR_NS}}/${{vars.CR_REGISTRY_NAME}}"
+      run: |
+        docker version
+        echo ${{secrets.CR_PASSWORD}} | docker login --username=${{secrets.CR_USERNAME}} --password-stdin ${{vars.CR_ADDR}} 
+        docker build . --file prod.Dockerfile --tag ${{env.REGISTRY_FULL_NAME}}:${{github.sha}}
+        docker push ${{env.REGISTRY_FULL_NAME}}:${{github.sha}}
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout private tools
+      uses: actions/checkout@v4
+      with:
+        repository: RunicBean/yanban-gitops
+        token: ${{ secrets.ACCESS_TOKEN }}
+    - name: Modify Gitops tag
+      env:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        SERVICE_FILE: xiandeng-web/compose.yml
+        TAG_NAME: imgTag
+        
+      run: |
+        #!/usr/bin/env bash
+        #git clone https://RunicBean:$ACCESS_TOKEN@github.com/RunicBean/yanban-gitops
+        #cd yanban-gitops
+        git config user.email "devops@example.com"
+        git config user.name "devops"
+        #git config --unset-all http.https://github.com/.extraheader
+
+        pwd && ls -trhl
+
+        sed -e "s@:${TAG_NAME}@:${{github.sha}}@" templates/${SERVICE_FILE} > ${SERVICE_FILE}
+        git add ${SERVICE_FILE}
+        git commit --no-verify -m "Trigger modification on compose file ${SERVICE_FILE} with tag ${{github.sha}}"
+        git push
