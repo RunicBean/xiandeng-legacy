@@ -1,0 +1,1 @@
+ALTER TABLE public.accounttask ADD COLUMN has_new_reply boolean DEFAULT false;

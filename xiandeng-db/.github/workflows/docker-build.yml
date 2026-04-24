@@ -1,0 +1,31 @@
+name: Migration
+
+on:
+  push:
+    branches: [ "develop" ]
+
+jobs:
+
+  migration-dev:
+
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: |
+        curl -L https://github.com/golang-migrate/migrate/releases/download/v4.18.1/migrate.linux-amd64.tar.gz | tar xvz
+        chmod +x migrate
+        ./migrate -source file://migrations -database ${{secrets.DATABASE_CRED_DEV}} up
+
+  migration-prod:
+
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: |
+        curl -L https://github.com/golang-migrate/migrate/releases/download/v4.18.1/migrate.linux-amd64.tar.gz | tar xvz
+        chmod +x migrate
+        ./migrate -source file://migrations -database ${{secrets.DATABASE_CRED_PROD}} up

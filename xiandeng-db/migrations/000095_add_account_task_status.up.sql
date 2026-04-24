@@ -1,0 +1,1 @@
+ALTER TYPE public.accounttaskstatus ADD VALUE 'EXPIRED';

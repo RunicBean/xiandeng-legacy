@@ -1,0 +1,1 @@
+UPDATE datadictionary SET "namespace"='withdrawstatus' WHERE "key" IN ('REQUESTED', 'LOCKED', 'RECALLED', 'PAID', 'DECLINED');

@@ -1,0 +1,1 @@
+ALTER TABLE public.studentattribute ADD studysuggestion text NULL;

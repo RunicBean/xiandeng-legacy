@@ -1,0 +1,1 @@
+alter table users add column AliasName varchar(512) NULL;

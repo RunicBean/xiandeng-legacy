@@ -1,0 +1,1 @@
+drop type actual_price_with_error;
